@@ -1,6 +1,6 @@
 {
     "env": "local",
-    "port": 8000,
+    "port": 8123,
     "logger": {
         "path": "logs/app-{YYYY-MM-DDTHH-mm}.log"
     }

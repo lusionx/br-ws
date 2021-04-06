@@ -1,12 +1,10 @@
 import * as Koa from 'koa'
 import { createServer, IncomingMessage } from 'http'
-import * as WebSocket from 'ws'
 import * as net from 'net'
-import { parse as urlparse } from 'url'
-import { parse as qsparse } from 'querystring'
+import * as WebSocket from 'ws'
+ import Axios from 'axios'
 
 import { exState, exCtx, Config, RequestConfig } from './lib'
-import Axios from 'axios'
 
 const config = (() => {
     let path = process.env['NODE_ENV'] || 'local'
@@ -59,9 +57,6 @@ createServer(app.callback()).listen(port).on('upgrade', (request: IncomingMessag
     wss.handleUpgrade(request, socket, head, (cli) => {
         // 验证权限
         if (!request.url) return socket.destroy()
-        const query = urlparse(request.url).query
-        if (!query) return socket.destroy()
-        if (!qsparse(query).a) return socket.destroy()
         console.log('svc upgrade', request.url, JSON.stringify(request.headers))
         wss.emit('connection', cli, request)
     })

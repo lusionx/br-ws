@@ -26,7 +26,8 @@ class Provider {
         })
 
         return new Promise<void>(res => {
-            this.ws.addEventListener('open', (evt) => {
+            this.ws.on('open', () => {
+                console.log('ws open')
                 res()
             })
         })
@@ -44,10 +45,6 @@ class Provider {
             console.log(evt);
         })
         this.mcall = new Map<string, vcall>()
-        this.open()
-        setInterval(() => {
-            console.log('ws', this.ws.readyState)
-        }, 500)
     }
 
     request(config: AxiosRequestConfig) {
@@ -68,12 +65,13 @@ class Provider {
 
 class Bridge {
     axios: AxiosInstance
-    constructor(public provider: Provider) {
+    provider: Provider
+    constructor(wsurl: string) {
+        this.provider = new Provider(wsurl)
         this.axios = Axios.create()
     }
 
     async reqBy(config: AxiosRequestConfig) {
-
         if (!this.provider.isReady) {
             await this.provider.open()
         }
@@ -88,6 +86,7 @@ class Bridge {
         return (config: AxiosRequestConfig) => {
             return new Promise<AxiosResponse>((res, rej) => {
                 this.reqBy(config).then(response => {
+                    Object.assign(response, { config })
                     var validateStatus = response.config.validateStatus;
                     if (!response.status || !validateStatus || validateStatus(response.status)) {
                         res(response)
@@ -115,18 +114,21 @@ function sleep(ms: number) {
 }
 
 async function main() {
-    const br = new Bridge(new Provider('ws://127.0.0.1:8000/wss'))
+    const br = new Bridge('ws://127.0.0.1:8123/ws/c?a=1')
     await br.provider.open()
-    await sleep(5000)
+    await sleep(10)
     const cli = Axios.create({
         adapter: br.adapter()
     })
 
-    const resp = await cli.get('http://cip.cc/', {
+    let resp = await cli.get('http://cip.cc/', {
         params: { a: 1 },
     })
-    console.log(resp.data)
-
+    console.log(resp.headers)
+    resp = await cli.get('http://cip.cc/', {
+        params: { a: 2 },
+    })
+    console.log(resp.headers)
 
 }
 

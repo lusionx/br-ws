@@ -115,7 +115,7 @@ function sleep(ms: number) {
 }
 
 async function main() {
-    const br = new Bridge(new Provider('ws://127.0.0.1:8000/wss'))
+    const br = new Bridge(new Provider('ws://127.0.0.1:8000/ws'))
     await br.provider.open()
     await sleep(5000)
     const cli = Axios.create({
@@ -126,8 +126,8 @@ async function main() {
         params: { a: 1 },
     })
     console.log(resp.data)
-
-
 }
 
-process.nextTick(main)
+document.addEventListener('readystatechange', () => {
+    main()
+})

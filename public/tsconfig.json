@@ -2,12 +2,14 @@
   "compileOnSave": true,
   "compilerOptions": {
     "target": "es2017",
-    "module": "commonjs",
+    "module": "UMD",
     "strict": true,
     "noImplicitAny": false,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "charset": "utf8",
+    "lib": [
+      "DOM"
+    ],
     "allowJs": false,
     "pretty": true,
     "noEmitOnError": false,
@@ -21,9 +23,5 @@
     "skipDefaultLibCheck": true,
     "inlineSourceMap": true,
     "importHelpers": true
-  },
-  "exclude": [
-    "public/*",
-    "node_modules/*"
-  ]
+  }
 }
