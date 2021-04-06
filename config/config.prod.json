@@ -1,0 +1,7 @@
+{
+    "env": "local",
+    "port": 8000,
+    "logger": {
+        "path": "/var/log/app-{YYYY-MM-DDTHH-mm}.log"
+    }
+}

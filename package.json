@@ -1,0 +1,27 @@
+{
+  "name": "b-socket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node index.ts",
+    "start": "node index.js",
+    "tsc": "tsc -p tsconfig.json",
+    "tsx": "rm -v index.js controller/*.js lib/*.js service/*.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "koa": "^2.13.0",
+    "moment": "^2.29.1",
+    "tslib": "^2.0.3",
+    "ws": "^7.4.1"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.11.6",
+    "@types/ws": "^7.4.0",
+    "ts-node": "^9.1.1",
+    "typescript": "^3.9.7"
+  }
+}
