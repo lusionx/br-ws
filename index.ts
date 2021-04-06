@@ -2,9 +2,10 @@ import * as Koa from 'koa'
 import { createServer, IncomingMessage } from 'http'
 import * as net from 'net'
 import * as WebSocket from 'ws'
- import Axios from 'axios'
+import Axios from 'axios'
 
 import { exState, exCtx, Config, RequestConfig } from './lib'
+import { rewrite } from './lib/conv'
 
 const config = (() => {
     let path = process.env['NODE_ENV'] || 'local'
@@ -33,6 +34,7 @@ interface ExtWs extends WebSocket {
     rate: Date
 }
 
+
 const wss = new WebSocket.Server({ noServer: true })
 wss.on('connection', (cnn, req) => {
     console.log('wss on conn')
@@ -42,12 +44,17 @@ wss.on('connection', (cnn, req) => {
     cnn.on('message', async (sdata: WebSocket.Data) => {
         const cli = cnn as ExtWs
         cli.rate = new Date()
-        // 解出 capt & apply
-        console.log('on message', sdata)
+
         const qconf: RequestConfig = JSON.parse(sdata.toString())
+        if (rewrite(qconf, config)) {
+            console.log('rewrite', qconf.url)
+        }else {
+            console.log('axios', qconf.url)
+        }
         const axios = Axios.create({
             validateStatus: i => i > 0
         })
+
         const { data, headers, status, statusText } = await axios(qconf)
         cnn.send(JSON.stringify({ data, headers, status, statusText, t: qconf.t, s: qconf.s }))
     })

@@ -121,7 +121,7 @@ async function main() {
         adapter: br.adapter()
     })
 
-    let resp = await cli.get('http://cip.cc/', {
+    let resp = await cli.get('http://lxing.cc/abc', {
         params: { a: 1 },
     })
     console.log(resp.headers)

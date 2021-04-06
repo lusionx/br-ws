@@ -1,6 +1,11 @@
 {
     "env": "local",
     "port": 8123,
+    "location": {
+        "http://lxing.cc/": {
+            "pass": "http://cip.cc/"
+        }
+    },
     "logger": {
         "path": "logs/app-{YYYY-MM-DDTHH-mm}.log"
     }

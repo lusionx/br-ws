@@ -1,8 +1,14 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios'
 
+interface Location {
+    pass: string
+    host?: string
+}
+
 export interface Config {
     env: 'local' | 'test' | 'prod'
     port: number
+    location: Record<string, Location>
     logger: {
         path: string
     }
