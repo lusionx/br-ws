@@ -1,6 +1,5 @@
 
 import Axios, { AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios'
-import * as WebSocket from 'ws'
 
 interface WsResponse extends AxiosResponse {
     t: number

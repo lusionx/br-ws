@@ -2,7 +2,7 @@
   "compileOnSave": true,
   "compilerOptions": {
     "target": "es2017",
-    "module": "UMD",
+    "module": "CommonJS",
     "strict": true,
     "noImplicitAny": false,
     "experimentalDecorators": true,
@@ -21,7 +21,9 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "inlineSourceMap": true,
+    "inlineSourceMap": false,
+    "sourceMap": false,
+    "removeComments": true,
     "importHelpers": true
   }
 }
