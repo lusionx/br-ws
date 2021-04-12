@@ -2,7 +2,7 @@
     "env": "prod",
     "port": 8000,
     "location": {
-        "http://br.cemt.besth5.com/api_v1": {
+        "http://br.tcem.besth5.com/api_v1": {
             "host": "wwcd87d0fe47315027-1000034.scrm.nequal.com",
             "pass": "http://10.103.226.172:80"
         }

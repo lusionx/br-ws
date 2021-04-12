@@ -46,6 +46,7 @@ wss.on('connection', (cnn, req) => {
         cli.rate = new Date()
 
         const qconf: RequestConfig = JSON.parse(sdata.toString())
+        console.log(config.location)
         if (rewrite(qconf, config)) {
             console.log('rewrite', qconf.url)
         }else {

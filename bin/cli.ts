@@ -1,6 +1,7 @@
 
 import Axios, { AxiosRequestConfig, AxiosResponse, AxiosInstance } from 'axios'
 import * as WebSocket from 'ws'
+import { doLimit, range } from '../lib/tool'
 
 interface WsResponse extends AxiosResponse {
     t: number
@@ -51,7 +52,7 @@ class Provider {
         const { headers, url, data, params } = config
         const t = Date.now()
         const s = Math.random() * 1000 | 0
-        console.log({ t, s, url })
+        // console.log({ t, s, url })
         this.ws.send(JSON.stringify({ t, s, headers, url, data, params }))
         const k = sBodyKey(t, s)
         return new Promise<AxiosResponse>(res => this.mcall.set(k, res))
@@ -114,22 +115,37 @@ function sleep(ms: number) {
 }
 
 async function main() {
-    const br = new Bridge('ws://127.0.0.1:8123/ws/c?a=1')
+    const br = new Bridge('ws://br.tcem.besth5.com/ws_v1    ')
     await br.provider.open()
     await sleep(10)
     const cli = Axios.create({
         adapter: br.adapter()
     })
 
-    let resp = await cli.get('http://lxing.cc/abc', {
-        params: { a: 1 },
-    })
-    console.log(resp.headers)
-    resp = await cli.get('http://cip.cc/', {
-        params: { a: 2 },
-    })
-    console.log(resp.headers)
+    const ms: number[] = []
 
+    const act = async (i: number) => {
+        const s = Date.now()
+        let resp = await cli.get('http://br.tcem.besth5.com/api_v1/session', {
+            params: { a: i },
+            headers: {
+                'x-auth-token': 'GUIDE_WZ6M53aK4WjpQqZXxnzahrNlur'
+            }
+        })
+        if (resp.status == 200) {
+            ms.push(Date.now() - s)
+        }
+        if (ms.length % 10 === 0) {
+            console.log('ms', ms.length)
+        }
+    }
+
+    const qs = range(0, 500).map(i => () => act(i))
+
+    await doLimit(5, qs)
+
+    const sum = ms.reduce((a, b) => a + b, 0)
+    console.log('avg', sum/ ms.length)
 }
 
 process.nextTick(main)
